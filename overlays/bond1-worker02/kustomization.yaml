@@ -41,4 +41,11 @@ patches:
       value: bond1
   target:
     kind: NodeNetworkConfigurationPolicy
-    name: br-data-bond-policy
+    name: br-data-policy
+- patch: |-
+    - op: replace
+      path: /spec/desiredState/ovn/bridge-mappings/0/localnet
+      value: vlan20-net
+  target:
+    kind: NodeNetworkConfigurationPolicy
+    name: br-data-vlan-policy
