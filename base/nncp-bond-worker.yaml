@@ -1,0 +1,36 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: bond-worker-policy
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: worker##
+  desiredState:
+    interfaces:
+    - name: bond#
+      description: bond for br-data
+      type: bond
+      state: up
+      ipv4:
+        dhcp: false
+        address:
+        - ip: 10.0.1.101
+          prefix-length: 24
+        enabled: true
+      link-aggregation:
+        mode: 802.3ad
+        options:
+          miimon: '140'
+        port:
+        - first
+        - second
+    dns-resolver:
+      config:
+        server:
+        - 10.0.1.53
+      mtu: 1500
+    routes:
+      config:
+      - destination: 0.0.0.0/0
+        next-hop-address: 10.0.1.1
+        next-hop-interface: bond##
