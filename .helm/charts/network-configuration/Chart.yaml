@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Configure a network and make it available in a cluster using NMState and Multus
+name: network-configuration
+version: 0.1.0

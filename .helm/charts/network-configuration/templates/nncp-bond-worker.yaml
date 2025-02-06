@@ -1,0 +1,37 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: {{ .Values.bond.name }}-{{ .Values.nodeName }}-policy
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: {{ .Values.nodeName }}
+  desiredState:
+    interfaces:
+    - name: {{ .Values.bond.name }}
+      description: bond for br-data
+      type: bond
+      state: up
+      ipv4:
+        dhcp: false
+        address:
+        - ip: {{ .Values.bond.ipAddress }}
+          prefix-length: 24
+        enabled: true
+      link-aggregation:
+        mode: 802.3ad
+        options:
+          miimon: '140'
+        port:
+        {{- range .Values.bond.interfaces }}
+        - {{ .name }}
+        {{- end }}
+    dns-resolver:
+      config:
+        server:
+        - {{ .Values.bond.dnsServerIPAddress }}
+      mtu: 1500
+    routes:
+      config:
+      - destination: 0.0.0.0/0
+        next-hop-address: {{ .Values.bond.gatewayIPAddress }}
+        next-hop-interface: {{ .Values.bond.name }}

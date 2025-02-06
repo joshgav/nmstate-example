@@ -1,0 +1,12 @@
+nodeName: worker04
+bond:
+  name: bond0
+  vlanID: 360
+  ipAddress: 10.0.10.10
+  gatewayIPAddress: 10.0.10.1
+  dnsServerIPAddress: 10.0.10.53
+  interfaces:
+  - name: enp1s0
+    macAddress: 00:00:00:00:00:01
+  - name: enp1s1
+    macAddress: 00:00:00:00:00:02
